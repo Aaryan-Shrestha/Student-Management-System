@@ -19,6 +19,16 @@ class MainWindow(QMainWindow):
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
 
+        # Table
+        self.table = QTableWidget()
+        self.table.setColumnCount(4)
+        self.table.setHorizontalHeaderLabels(("ID", "Name", "Course", "Phone Number"))
+        self.setCentralWidget(self.table)
+
+
+    def load_data(self):
+        pass
+
 
 app = QApplication(sys.argv)
 mainWindow = MainWindow()
