@@ -29,6 +29,7 @@ class MainWindow(QMainWindow):
 
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
+        about_action.triggered.connect(self.about)
 
         # Table
         self.table = QTableWidget()
@@ -63,13 +64,16 @@ class MainWindow(QMainWindow):
 
         connection.close()
 
+
     def insert(self):
         insert_dialog = InsertDialog()
         insert_dialog.exec()
 
+
     def search(self):
         search_dialog = FindDataDialog()
         search_dialog.exec()
+
 
     def cell_clicked(self):
         edit_button = QPushButton("Edit Record")
@@ -92,8 +96,14 @@ class MainWindow(QMainWindow):
         dialog = EditDialog()
         dialog.exec()
 
+
     def delete(self):
         dialog = DeleteDialog()
+        dialog.exec()
+
+
+    def about(self):
+        dialog = AboutDialog()
         dialog.exec()
 
 
@@ -130,6 +140,7 @@ class InsertDialog(QDialog):
 
         self.setLayout(layout)
 
+
     def add_student(self):
         name = self.student_name.text()
         course = self.course_name.itemText(self.course_name.currentIndex())
@@ -165,6 +176,7 @@ class FindDataDialog(QDialog):
         layout.addWidget(search_button)
 
         self.setLayout(layout)
+
 
     def search(self):
         name = self.student_name.text()
@@ -224,6 +236,7 @@ class EditDialog(QDialog):
 
         self.setLayout(layout)
 
+
     def update_student(self):
         connection = sqlite3.connect("database.db")
         cursor = connection.cursor()
@@ -259,6 +272,7 @@ class DeleteDialog(QDialog):
 
         yes.clicked.connect(self.delete_student)
 
+
     def delete_student(self):
         # Get row number and id from selected row
         index = main_window.table.currentRow()  # Returns an integer
@@ -279,6 +293,17 @@ class DeleteDialog(QDialog):
         confirmation_widget.setWindowTitle("Success")
         confirmation_widget.setText("Record was deleted successfully!")
         confirmation_widget.exec()
+
+
+
+class AboutDialog(QMessageBox):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("About")
+        content = """
+        Student Management System allows us to create, read, update and delete operations on student records.
+        """
+        self.setText(content)
 
 
 
